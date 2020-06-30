@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import GCP_TOKEN from "./token.json";
 
@@ -8,8 +8,25 @@ const PROJECT_ID = "document-ai";
 
 const ContainerUpload = (props) => {
   const [files, setFiles] = useState([]);
+  const [filesProcessed, setFilesProcessed] = useState([]);
   const [disableBtn, setDisableBtn] = useState(true);
   const [validInput, setValidInput] = useState(true);
+  const [listening, setListening] = useState(false);
+
+  useEffect(() => {
+    let events;
+
+    events = new EventSource("http://localhost:8080/events");
+    events.onopen = (event) => {
+      console.log("Connection oppened");
+    };
+    events.onmessage = (event) => {
+      console.log(event, "Event Received");
+      const parsedData = JSON.parse(event.data);
+
+      setFilesProcessed((filesProcessed) => filesProcessed.concat(parsedData));
+    };
+  }, [filesProcessed]);
 
   const handleFileChange = (event) => {
     const receivedFiles = event.target.files;
@@ -38,7 +55,7 @@ const ContainerUpload = (props) => {
     }
   };
 
-  const handleUploadFile = () => {
+  const handleUploadFile = async () => {
     let fd = new FormData();
     const newDate = new Date(Date.now());
     fd.name =
@@ -55,20 +72,26 @@ const ContainerUpload = (props) => {
         Authorization: "Bearer " + GCP_TOKEN.token,
       },
     };
+    // const source = new EventSource("http://localhost:3000/respstadouploac");
 
-    axios
-      .post(
-        "https://storage.googleapis.com/upload/storage/v1/b/" +
-          BUCKET_NAME +
-          "/o?uploadType=media&name=" +
-          fd.name,
-        fd,
-        gcpConfig
-      )
-      .then((e) => console.log(e));
+    // source.addEventListener();
+
+    const response = await axios.post("http://localhost:8080/upload", fd, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    // axios
+    //   .post(
+    //     // "https://storage.googleapis.com/upload/storage/v1/b/" +
+    //     //   BUCKET_NAME +
+    //     //   "/o?uploadType=media&name=" +
+    //     //   fd.name,
+    //     fd,
+    //     gcpConfig
+    //   )
+    //   .then((e) => console.log(e));
 
     console.log("File Uploaded: " + fd.name);
-    console.log(fd);
+    console.log(response.data.body);
   };
 
   const invalidFileTypeWarning = () => {
