@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import GCP_TOKEN from "./token.json";
+import socketIOClient from "socket.io-client";
 
 const ACCEPTED_FILE_EXTENSIONS = { png: true, jpg: true, pdf: true };
 const BUCKET_NAME = "bucket-document-ai";
@@ -16,16 +17,10 @@ const ContainerUpload = (props) => {
   useEffect(() => {
     let events;
 
-    events = new EventSource("http://localhost:8080/events");
-    events.onopen = (event) => {
-      console.log("Connection oppened");
-    };
-    events.onmessage = (event) => {
-      console.log(event, "Event Received");
-      const parsedData = JSON.parse(event.data);
-
-      setFilesProcessed((filesProcessed) => filesProcessed.concat(parsedData));
-    };
+    const socket = socketIOClient("http://127.0.0.1:8080/", {
+      transports: ["websocket", "polling"],
+    });
+    socket.on("FileProcessing", (data) => console.log(data));
   }, [filesProcessed]);
 
   const handleFileChange = (event) => {
