@@ -20,7 +20,18 @@ const ContainerUpload = (props) => {
     const socket = socketIOClient("http://127.0.0.1:8080/", {
       transports: ["websocket", "polling"],
     });
-    socket.on("FileProcessing", (data) => console.log(data));
+    socket.on("FileProcessing", (receivedData) => {
+      console.log(receivedData);
+      var blob = new Blob([receivedData.file[0]], {
+        type: "text/csv;charset=utf-8;",
+      });
+
+      const url = URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `${receivedData.name}`);
+      link.click();
+    });
   }, [filesProcessed]);
 
   const handleFileChange = (event) => {
