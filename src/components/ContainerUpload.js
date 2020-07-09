@@ -17,7 +17,7 @@ const ContainerUpload = (props) => {
   useEffect(() => {
     let events;
 
-    const socket = socketIOClient("http://127.0.0.1:8080/", {
+    const socket = socketIOClient("https://document-ai-api.herokuapp.com/", {
       transports: ["websocket", "polling"],
     });
     socket.on("FileProcessing", (receivedData) => {
@@ -82,9 +82,13 @@ const ContainerUpload = (props) => {
 
     // source.addEventListener();
 
-    const response = await axios.post("http://localhost:8080/upload", fd, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const response = await axios.post(
+      "https://document-ai-api.herokuapp.com/upload",
+      fd,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
     // axios
     //   .post(
     //     // "https://storage.googleapis.com/upload/storage/v1/b/" +
