@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import GCP_TOKEN from "./token.json";
 import socketIOClient from "socket.io-client";
+import * as ReactBootStrap from "react-bootstrap";
+require("dotenv").config();
 
 const ACCEPTED_FILE_EXTENSIONS = { png: true, jpg: true, pdf: true };
-const BUCKET_NAME = "bucket-document-ai";
-const PROJECT_ID = "document-ai";
 
 const ContainerUpload = (props) => {
   const [files, setFiles] = useState([]);
-  const [filesProcessed, setFilesProcessed] = useState([]);
   const [disableBtn, setDisableBtn] = useState(true);
   const [validInput, setValidInput] = useState(true);
-  const [listening, setListening] = useState(false);
+  const [waitingAPIFile, setwaitingAPIFile] = useState(false);
 
-  useEffect(() => {
-    let events;
+  const loadButton = (loadingText) => {
+    return (
+      <div>
+        <ReactBootStrap.Spinner animation="border" variant="info" />
+        <a>{loadingText}</a>
+      </div>
+    );
+  };
 
-    const socket = socketIOClient("https://document-ai-api.herokuapp.com/", {
+  const initializeSocketWithApi = () => {
+    const socket = socketIOClient(process.env.REACT_APP_API_URL, {
       transports: ["websocket", "polling"],
     });
     socket.on("FileProcessing", (receivedData) => {
@@ -32,7 +37,13 @@ const ContainerUpload = (props) => {
       link.setAttribute("download", `${receivedData.name}`);
       link.click();
     });
-  }, [filesProcessed]);
+    socket.on("Done", () => {
+      setwaitingAPIFile(false);
+      socket.close();
+    });
+  };
+
+  useEffect(() => {});
 
   const handleFileChange = (event) => {
     const receivedFiles = event.target.files;
@@ -62,6 +73,8 @@ const ContainerUpload = (props) => {
   };
 
   const handleUploadFile = async () => {
+    setwaitingAPIFile(true);
+    setFiles([]);
     let fd = new FormData();
     const newDate = new Date(Date.now());
     fd.name =
@@ -73,35 +86,17 @@ const ContainerUpload = (props) => {
       fd.append(f[0].name, f[0], f[0].name);
     });
 
-    const gcpConfig = {
-      headers: {
-        Authorization: "Bearer " + GCP_TOKEN.token,
-      },
-    };
-    // const source = new EventSource("http://localhost:3000/respstadouploac");
-
-    // source.addEventListener();
-
     const response = await axios.post(
-      "https://document-ai-api.herokuapp.com/upload",
+      `${process.env.REACT_APP_API_URL}upload`,
       fd,
       {
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
-    // axios
-    //   .post(
-    //     // "https://storage.googleapis.com/upload/storage/v1/b/" +
-    //     //   BUCKET_NAME +
-    //     //   "/o?uploadType=media&name=" +
-    //     //   fd.name,
-    //     fd,
-    //     gcpConfig
-    //   )
-    //   .then((e) => console.log(e));
 
-    console.log("File Uploaded: " + fd.name);
-    console.log(response.data.body);
+    console.log(`Files uploaded to ${process.env.REACT_APP_API_URL}upload`);
+    console.log(`Answer: ${response.data.body}`);
+    initializeSocketWithApi();
   };
 
   const invalidFileTypeWarning = () => {
@@ -110,23 +105,28 @@ const ContainerUpload = (props) => {
     }
   };
 
-  let ContainerUploadContent = (
-    <React.Fragment>
-      <div>
+  let ContainerUploadContent;
+  if (waitingAPIFile)
+    ContainerUploadContent = loadButton("Estamos processando seus arquivos");
+  else {
+    ContainerUploadContent = (
+      <React.Fragment>
         <div>
-          <button onClick={handleUploadFile} disabled={disableBtn}>
-            Upload
-          </button>
+          <div>
+            <button onClick={handleUploadFile} disabled={disableBtn}>
+              Upload
+            </button>
+          </div>
+          <div>
+            <input type="file" onChange={handleFileChange} multiple />
+            <label htmlFor="inputGroupFile01">Choose file</label>
+          </div>
         </div>
-        <div>
-          <input type="file" onChange={handleFileChange} multiple />
-          <label htmlFor="inputGroupFile01">Choose file</label>
-        </div>
-      </div>
 
-      {invalidFileTypeWarning()}
-    </React.Fragment>
-  );
+        {invalidFileTypeWarning()}
+      </React.Fragment>
+    );
+  }
 
   return ContainerUploadContent;
 };

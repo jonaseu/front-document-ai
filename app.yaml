@@ -1,0 +1,16 @@
+#paste build folder and app.yaml on bucket
+#gcloud config set project document-ai-1
+#mkdir document_ai-frontend
+#gsutil rsync -r gs://bucket-document-ai/website ./document_ai-frontend
+#gcloud app deploy
+#for local testing: REACT_APP_API_URL: http://localhost:8080/
+#for deployoing:    REACT_APP_API_URL:https://document-ai-api.herokuapp.com/
+runtime: nodejs10
+handlers:
+  - url: /(.*\..+)$
+    static_files: build/\1
+    upload: build/(.*/..+)$
+
+  - url: /.*
+    static_files: build/index.html
+    upload: build/index.html
