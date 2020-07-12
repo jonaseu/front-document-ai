@@ -3,8 +3,8 @@
 #mkdir document_ai-frontend
 #gsutil rsync -r gs://bucket-document-ai/website ./document_ai-frontend
 #gcloud app deploy
-#for local testing: REACT_APP_API_URL: http://localhost:8080/
-#for deployoing:    REACT_APP_API_URL:https://document-ai-api.herokuapp.com/
+#for local testing: REACT_APP_API_URL = http://localhost:8080/
+#for deployoing:    REACT_APP_API_URL = https://document-ai-api.herokuapp.com/
 runtime: nodejs10
 handlers:
   - url: /(.*\..+)$
