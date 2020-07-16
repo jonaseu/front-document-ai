@@ -1,0 +1,102 @@
+@import "../../styles/styles.scss";
+
+$btn-color: $color-primary;
+$btn-hover-color: $color-secondary;
+
+input[type="file"] {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+}
+
+label {
+  display: inline-block;
+}
+
+.upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+
+  @media (max-width: $large-devices-breakpoint) {
+    height: 300px;
+  }
+  @media (max-width: $medium-devices-breakpoint) {
+    height: 200px;
+  }
+
+  width: 100%;
+  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+  margin-left: 8.33%;
+  margin-bottom: 50px;
+  width: 83.33333333%;
+  margin-top: -100px;
+
+  position: absolute;
+  background: white;
+  border-radius: 8px;
+  border: 2px #e0e0e0 solid;
+
+  &-title {
+    // position: absolute;
+    width: 80%;
+    color: $color-secondary-dark;
+    text-align: center;
+    font-weight: 400;
+
+    @media (max-width: $large-devices-breakpoint) {
+      margin-top: 30px;
+      margin-bottom: 40px;
+      font-size: 40px;
+      line-height: 44px;
+    }
+    @media (max-width: $medium-devices-breakpoint) {
+      margin-top: 15px;
+      margin-bottom: 10px;
+      font-size: 20px;
+      line-height: 22px;
+    }
+  }
+
+  &-btngroup {
+    height: 25%;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &-btn {
+      background-color: $color-primary;
+      color: white;
+      border: 2px solid $color-secondary;
+      margin: 0px 20px;
+
+      width: 200px;
+      height: 100%;
+
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.3333333;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        background-color: $color-primary-dark;
+        cursor: pointer;
+      }
+      &:focus {
+        outline: 0;
+      }
+      &:disabled {
+        opacity: 0.4;
+      }
+    }
+  }
+}

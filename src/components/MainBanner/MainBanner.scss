@@ -1,0 +1,77 @@
+@import "../../styles/styles.scss";
+
+$banner-color: white;
+$banner-btn-color: $color-secondary-dark;
+
+.mainbanner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  @media (max-width: $large-devices-breakpoint) {
+    height: 500px;
+  }
+  @media (max-width: $medium-devices-breakpoint) {
+    height: 350px;
+  }
+
+  &-title {
+    width: 80%;
+    color: $color-secondary-dark;
+    text-align: center;
+    font-weight: 400;
+    margin-top: 40px;
+    margin-bottom: 20px;
+
+    @media (max-width: $large-devices-breakpoint) {
+      font-size: 40px;
+      line-height: 44px;
+    }
+    @media (max-width: $medium-devices-breakpoint) {
+      font-size: 20px;
+      line-height: 22px;
+    }
+  }
+
+  &-subtitle {
+    width: 80%;
+    color: $color-secondary-dark;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+
+    @media (max-width: $large-devices-breakpoint) {
+      font-size: 19px;
+      line-height: 27px;
+    }
+    @media (max-width: $medium-devices-breakpoint) {
+      font-size: 14px;
+      line-height: 18px;
+    }
+  }
+
+  &-btn {
+    background-color: $banner-color;
+    color: $banner-btn-color;
+    border: 2px solid $banner-btn-color;
+
+    width: 200px;
+    padding: 17px;
+
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    &:hover {
+      background-color: $banner-btn-color;
+      color: $banner-color;
+      cursor: pointer;
+    }
+    &:focus {
+      outline: 0;
+    }
+  }
+}

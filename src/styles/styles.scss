@@ -1,0 +1,32 @@
+$small-devices-breakpoint: 576px;
+$medium-devices-breakpoint: 768px;
+$large-devices-breakpoint: 20000px;
+$extralarge-devices-breakpoint: 1200px;
+//$large-devices-breakpoint: 992px;
+
+$color-primary: #ffc107;
+$color-primary-dark: #d1a110;
+
+$color-secondary: #808080;
+$color-secondary-dark: #505050;
+
+$color-font-light: #ffffff;
+$color-font-dark: #000000;
+
+h1 {
+  width: 80%;
+  color: $color-secondary-dark;
+  text-align: center;
+  font-weight: 400;
+  margin-top: 40px;
+  margin-bottom: 20px;
+
+  @media (max-width: $large-devices-breakpoint) {
+    font-size: 40px;
+    line-height: 44px;
+  }
+  @media (max-width: $medium-devices-breakpoint) {
+    font-size: 20px;
+    line-height: 22px;
+  }
+}

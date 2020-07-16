@@ -2,9 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 import * as ReactBootStrap from "react-bootstrap";
+import Button from "../Button/Button";
+import "./ContainerUpload.scss";
+import { BsCloudUpload } from "react-icons/bs";
+
 require("dotenv").config();
 
 const ACCEPTED_FILE_EXTENSIONS = { png: true, jpg: true, pdf: true };
+const ACCEPTED_MAX_FILE_SIZE_MB = 6.5;
 
 const ContainerUpload = (props) => {
   const [files, setFiles] = useState([]);
@@ -15,7 +20,7 @@ const ContainerUpload = (props) => {
   const loadButton = (loadingText) => {
     return (
       <div>
-        <ReactBootStrap.Spinner animation="border" variant="info" />
+        <ReactBootStrap.Spinner animation="border" variant="warning" />
         <a>{loadingText}</a>
       </div>
     );
@@ -53,11 +58,15 @@ const ContainerUpload = (props) => {
       let validFiles = [];
 
       const fileExtesion = file.name.toLowerCase().slice(-3);
-      if (ACCEPTED_FILE_EXTENSIONS[fileExtesion] === true) {
+      if (
+        ACCEPTED_FILE_EXTENSIONS[fileExtesion] === true &&
+        file.size < ACCEPTED_MAX_FILE_SIZE_MB * 1000000
+      ) {
         validFiles.push(file);
       } else {
         areFilesValid = false;
       }
+      console.log(file.size);
       return validFiles;
     });
 
@@ -74,6 +83,7 @@ const ContainerUpload = (props) => {
 
   const handleUploadFile = async () => {
     setwaitingAPIFile(true);
+    setDisableBtn(true);
     setFiles([]);
     let fd = new FormData();
     const newDate = new Date(Date.now());
@@ -101,32 +111,51 @@ const ContainerUpload = (props) => {
 
   const invalidFileTypeWarning = () => {
     if (!validInput) {
-      return <span>Invalid File Type Selected</span>;
+      return (
+        <span>{`Invalid File Type Selected or file larger than ${ACCEPTED_MAX_FILE_SIZE_MB}Mb`}</span>
+      );
     }
   };
 
-  let ContainerUploadContent;
-  if (waitingAPIFile)
-    ContainerUploadContent = loadButton("Estamos processando seus arquivos");
-  else {
-    ContainerUploadContent = (
-      <React.Fragment>
-        <div>
-          <div>
-            <button onClick={handleUploadFile} disabled={disableBtn}>
-              Upload
-            </button>
+  const currrentOption = () => {
+    if (waitingAPIFile) return loadButton("Estamos processando seus arquivos");
+    else {
+      return (
+        <div className="upload-btngroup">
+          <div className="upload-btngroup-btn">
+            <label for="upload">
+              <BsCloudUpload /> Adicionar arquivos...
+            </label>
+            <input
+              type="file"
+              id="upload"
+              onChange={handleFileChange}
+              multiple
+            />
           </div>
-          <div>
-            <input type="file" onChange={handleFileChange} multiple />
-            <label htmlFor="inputGroupFile01">Choose file</label>
-          </div>
-        </div>
 
-        {invalidFileTypeWarning()}
-      </React.Fragment>
-    );
-  }
+          <Button
+            className="upload-btngroup-btn"
+            onClick={handleUploadFile}
+            disabled={disableBtn}
+          >
+            Enviar
+          </Button>
+
+          {invalidFileTypeWarning()}
+        </div>
+      );
+    }
+  };
+
+  const ContainerUploadContent = (
+    <React.Fragment>
+      <div className="upload">
+        <h1 className="upload-title">Faça um teste você mesmo!</h1>
+        {currrentOption()}
+      </div>
+    </React.Fragment>
+  );
 
   return ContainerUploadContent;
 };
