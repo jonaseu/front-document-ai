@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/front-document-ai/static/css/main.2420879a.chunk.css",
+    "main.js": "/front-document-ai/static/js/main.c4ae5c08.chunk.js",
+    "main.js.map": "/front-document-ai/static/js/main.c4ae5c08.chunk.js.map",
+    "runtime-main.js": "/front-document-ai/static/js/runtime-main.9919ceb6.js",
+    "runtime-main.js.map": "/front-document-ai/static/js/runtime-main.9919ceb6.js.map",
+    "static/css/2.af3c1da9.chunk.css": "/front-document-ai/static/css/2.af3c1da9.chunk.css",
+    "static/js/2.f2838b0e.chunk.js": "/front-document-ai/static/js/2.f2838b0e.chunk.js",
+    "static/js/2.f2838b0e.chunk.js.map": "/front-document-ai/static/js/2.f2838b0e.chunk.js.map",
+    "index.html": "/front-document-ai/index.html",
+    "precache-manifest.114f07a984f77b64e00236fbc9030a5d.js": "/front-document-ai/precache-manifest.114f07a984f77b64e00236fbc9030a5d.js",
+    "service-worker.js": "/front-document-ai/service-worker.js",
+    "static/css/2.af3c1da9.chunk.css.map": "/front-document-ai/static/css/2.af3c1da9.chunk.css.map",
+    "static/css/main.2420879a.chunk.css.map": "/front-document-ai/static/css/main.2420879a.chunk.css.map",
+    "static/js/2.f2838b0e.chunk.js.LICENSE.txt": "/front-document-ai/static/js/2.f2838b0e.chunk.js.LICENSE.txt",
+    "static/media/ImageBanner.scss": "/front-document-ai/static/media/background.577429c5.jpg",
+    "static/media/logo.png": "/front-document-ai/static/media/logo.3d981ce9.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9919ceb6.js",
+    "static/css/2.af3c1da9.chunk.css",
+    "static/js/2.f2838b0e.chunk.js",
+    "static/css/main.2420879a.chunk.css",
+    "static/js/main.c4ae5c08.chunk.js"
+  ]
+}
