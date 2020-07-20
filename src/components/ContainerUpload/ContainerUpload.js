@@ -123,7 +123,7 @@ const ContainerUpload = (props) => {
       return (
         <div className="upload-btngroup">
           <div className="upload-btngroup-btn">
-            <label for="upload">
+            <label htmlFor="upload">
               <BsCloudUpload /> Adicionar arquivos...
             </label>
             <input
