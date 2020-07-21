@@ -5,7 +5,7 @@ import * as ReactBootStrap from "react-bootstrap";
 import Button from "../Button/Button";
 import "./ContainerUpload.scss";
 import { BsCloudUpload } from "react-icons/bs";
-
+import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
 require("dotenv").config();
 
 const ACCEPTED_FILE_EXTENSIONS = { png: true, jpg: true, pdf: true };
@@ -118,8 +118,13 @@ const ContainerUpload = (props) => {
   };
 
   const currrentOption = () => {
-    if (waitingAPIFile) return loadButton("Estamos processando seus arquivos");
-    else {
+    if (waitingAPIFile)
+      return (
+        <LoadingIndicator>
+          Esperando Processamento dos arquivos
+        </LoadingIndicator>
+      );
+    else
       return (
         <div className="upload-btngroup">
           <div className="upload-btngroup-btn">
@@ -145,7 +150,6 @@ const ContainerUpload = (props) => {
           {invalidFileTypeWarning()}
         </div>
       );
-    }
   };
 
   const ContainerUploadContent = (
