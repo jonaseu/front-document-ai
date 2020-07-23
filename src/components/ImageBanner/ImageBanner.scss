@@ -3,6 +3,12 @@
 .imagebanner {
   height: 300px;
   width: 100%;
+  @media (max-width: $large-devices-breakpoint) {
+    margin-top: -190px;
+  }
+  @media (max-width: $medium-devices-breakpoint) {
+    margin-top: -46px;
+  }
 
   background-image: url(../../images/background.jpg);
   background-position: 50% 50%;

@@ -10,7 +10,6 @@ const Navbar = (props) => {
       <Link className="navbar-logo-container" to="/">
         <img className="navbar-logo" src={logoImage} />
       </Link>
-      <Button className="navbar-btn">Sign In</Button>
     </div>
   );
 };
